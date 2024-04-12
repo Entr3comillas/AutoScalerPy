@@ -1,0 +1,40 @@
+import time
+import random
+
+class AutoScaler:
+    def __init__(self, min_instances=1, max_instances=10, threshold=0.8, monitor_interval=5):
+        self.min_instances = min_instances
+        self.max_instances = max_instances
+        self.threshold = threshold
+        self.monitor_interval = monitor_interval
+        self.instances = self.min_instances
+
+    def monitor_resource_usage(self):
+        # Simulación de monitorización de uso de recursos (puedes reemplazar con tu propia lógica)
+        return random.uniform(0, 1)
+
+    def scale_out(self):
+        if self.instances < self.max_instances:
+            self.instances += 1
+            print(f"Agregando una instancia. Total: {self.instances}")
+
+    def scale_in(self):
+        if self.instances > self.min_instances:
+            self.instances -= 1
+            print(f"Eliminando una instancia. Total: {self.instances}")
+
+    def run_autoscaler(self):
+        while True:
+            try:
+                usage = self.monitor_resource_usage()
+                if usage > self.threshold:
+                    self.scale_out()
+                elif usage < self.threshold - 0.1:
+                    self.scale_in()
+            except Exception as e:
+                print(f"Error en la monitorización: {e}")
+            time.sleep(self.monitor_interval)
+
+if __name__ == "__main__":
+    autoscaler = AutoScaler()
+    autoscaler.run_autoscaler()
